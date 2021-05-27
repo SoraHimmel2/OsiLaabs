@@ -1,4 +1,4 @@
-/*#include <pthread.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <iostream>
 #include <unistd.h>
@@ -9,8 +9,9 @@ pthread_mutex_t mutex;
 
 void* firstThread(void *arg){
     int *someVariable = (int*)arg;
-   pthread_mutex_lock(&mutex);
-   // pthread_mutex_trylock(&mutex);
+
+   if(pthread_mutex_trylock(&mutex))
+       pthread_mutex_lock(&mutex);
     while (*someVariable != 0) {
         sleep(2);
         cout << "1" << endl;
@@ -24,8 +25,8 @@ void* firstThread(void *arg){
 }
 
 void* secondThread(void *arg){
-    pthread_mutex_lock(&mutex);
-    pthread_mutex_trylock(&mutex);
+    if(pthread_mutex_trylock(&mutex))
+        pthread_mutex_lock(&mutex);
     int *someVariable = (int*)arg;
     while (*someVariable != 0) {
         sleep(2);
@@ -79,4 +80,5 @@ int main ()
 
 
 
-}*/
+}
+
